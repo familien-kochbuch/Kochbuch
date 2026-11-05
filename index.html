@@ -126,6 +126,30 @@ legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
   .col + .col{border-left:0;border-top:1.5px solid var(--line)}
   .sheet-head,.col,form.edit{padding:20px}
 }
+#print-all{display:none}
+@media print{
+  @page{margin:15mm}
+  :root,:root[data-theme="dark"]{--paper:#fff;--card:#fff;--ink:#111;--muted:#555;--line:#bbb;--rule:#ddd;--accent:#5b3a5e;--mustard-soft:#f1f1f1;color-scheme:light}
+  body{background:#fff;color:#111;font-size:11pt;padding:0!important}
+  .wrap{max-width:none}
+  header.top,#view-list,#view-form,.detail-actions,.toast,.scaler button{display:none!important}
+  body.printing-all #view-detail{display:none!important}
+  body.printing-all #print-all{display:block}
+  .sheet{border:0;border-radius:0}
+  #print-all .sheet{break-after:page}
+  #print-all .sheet:last-child{break-after:auto}
+  .sheet-head{padding:0 0 10px}
+  .sheet-head h2{font-size:22pt}
+  .sheet-body{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)!important}
+  .col{padding:14px 16px 0 0!important}
+  .col + .col{border-left:1px solid #ccc!important;border-top:0!important;padding-left:16px!important}
+  .ingr{background:none;line-height:1.5}
+  .ingr li{padding:2px 0;border-bottom:1px solid #e3e3e3;break-inside:avoid}
+  .steps li{break-inside:avoid}
+  .minitag{border:1px solid #ccc;background:none}
+  .notes{background:none;border:1px solid #ccc}
+  .scaler{margin-bottom:6px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -148,6 +172,7 @@ legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="q" type="search" placeholder="Rezept, Zutat oder Person suchen" aria-label="Suchen">
       </div>
+      <button class="btn" id="btn-printall" type="button">Alle drucken</button>
     </div>
     <div class="tags" id="tagfilter" aria-label="Nach Schlagwort filtern"></div>
     <div class="layout">
@@ -162,6 +187,7 @@ legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
 
   <section id="view-detail" hidden></section>
   <section id="view-form" hidden></section>
+  <section id="print-all" aria-hidden="true"></section>
 </div>
 <div class="toast" id="toast" hidden></div>
 
@@ -226,6 +252,7 @@ function renderList(){
   const n=state.recipes.length;
   $("count").textContent=state.loaded?(n===1?"1 Rezept":n+" Rezepte"):"Lädt …";
   const list=state.recipes.filter(matches).sort((a,b)=>(a.titel||"").localeCompare(b.titel||"","de"));
+  const pb=$("btn-printall"); pb.hidden=!list.length; pb.textContent=list.length===n?"Alle drucken":(list.length===1?"1 Rezept drucken":list.length+" Rezepte drucken");
   const grid=$("grid"),empty=$("empty");
   grid.innerHTML=list.map(r=>{
     const c=catOf(r.kategorie);
@@ -290,16 +317,20 @@ function renderDetail(id){
   const base=+r.portionen||0;
   if(detailPortions===0)detailPortions=base;
   detailFactor=base?detailPortions/base:1;
-  const c=catOf(r.kategorie);
   v.innerHTML=`
    <div class="detail-actions">
      <button class="btn ghost" data-act="back" type="button">← Alle Rezepte</button>
      <span style="display:flex;gap:8px;flex-wrap:wrap">
+       <button class="btn small" data-act="print" type="button">Drucken</button>
        <button class="btn small" data-act="copylink" type="button">Link kopieren</button>
        ${state.canWrite?`<button class="btn small" data-act="edit" data-id="${esc(r.id)}" type="button">Bearbeiten</button>`:""}
      </span>
    </div>
-   <article class="sheet">
+   ${sheetHTML(r,detailFactor,detailPortions,!!base)}`;
+}
+function sheetHTML(r,factor,portions,scalable){
+  const c=catOf(r.kategorie);
+  return `<article class="sheet">
      <div class="sheet-head" style="border-bottom-color:${c?c.c:"var(--accent)"}">
        <span class="count">${esc(catName(r.kategorie))}</span>
        <h2>${esc(r.titel)}</h2>
@@ -309,8 +340,8 @@ function renderDetail(id){
      <div class="sheet-body">
        <div class="col">
          <h3>Zutaten</h3>
-         ${base?`<div class="scaler"><button type="button" data-act="minus" aria-label="Weniger Portionen">−</button><output id="por">${detailPortions} Portion${detailPortions===1?"":"en"}</output><button type="button" data-act="plus" aria-label="Mehr Portionen">+</button></div>`:""}
-         <ul class="ingr">${(r.zutaten||[]).map(l=>{if(/:\s*$/.test(l))return `<li class="sub">${esc(l.replace(/:\s*$/,""))}</li>`;const s=splitIngr(l,detailFactor);return `<li><span class="amt">${esc(s.amt)}</span><span>${esc(s.name)}</span></li>`}).join("")||`<li>Keine Zutaten eingetragen</li>`}</ul>
+         ${scalable?`<div class="scaler"><button type="button" data-act="minus" aria-label="Weniger Portionen">−</button><output>${portions} Portion${portions===1?"":"en"}</output><button type="button" data-act="plus" aria-label="Mehr Portionen">+</button></div>`:""}
+         <ul class="ingr">${(r.zutaten||[]).map(l=>{if(/:\s*$/.test(l))return `<li class="sub">${esc(l.replace(/:\s*$/,""))}</li>`;const s=splitIngr(l,factor);return `<li><span class="amt">${esc(s.amt)}</span><span>${esc(s.name)}</span></li>`}).join("")||`<li>Keine Zutaten eingetragen</li>`}</ul>
        </div>
        <div class="col">
          <h3>Zubereitung</h3>
@@ -320,6 +351,13 @@ function renderDetail(id){
      </div>
    </article>`;
 }
+function printAll(){
+  const list=state.recipes.filter(matches).sort((a,b)=>(a.titel||"").localeCompare(b.titel||"","de"));
+  $("print-all").innerHTML=list.map(r=>sheetHTML(r,1,+r.portionen||0,!!+r.portionen)).join("");
+  document.body.classList.add("printing-all");
+  window.print();
+}
+window.addEventListener("afterprint",()=>{document.body.classList.remove("printing-all");$("print-all").innerHTML=""});
 
 /* ---------- Formular ---------- */
 let editing=null,confirmDelete=false;
@@ -382,6 +420,8 @@ document.addEventListener("click",async e=>{
   if(a==="edit"){renderForm(state.recipes.find(r=>r.id===b.dataset.id));show("form");return}
   if(a==="cancel"){location.hash.startsWith("#r-")?(renderDetail(location.hash.slice(3)),show("detail")):(renderList(),show("list"));return}
   if(a==="plus"||a==="minus"){detailPortions=Math.max(1,detailPortions+(a==="plus"?1:-1));renderDetail(location.hash.slice(3));return}
+  if(b.id==="btn-printall"){printAll();return}
+  if(a==="print"){window.print();return}
   if(a==="copylink"){
     const url=location.href;
     try{await navigator.clipboard.writeText(url);toast("Link kopiert")}catch{toast("Link oben in der Adresszeile kopieren")}
