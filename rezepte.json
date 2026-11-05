@@ -146,7 +146,7 @@
   "id": "tortilla-de-patatas",
   "titel": "Tortilla de Patatas",
   "kategorie": "beilagen",
-  "von": "",
+  "von": "Blanca",
   "portionen": null,
   "zeit": null,
   "tags": [
@@ -256,7 +256,7 @@
   "id": "apfel-tomaten-suppe",
   "titel": "Apfel-Tomaten-Suppe",
   "kategorie": "suppen",
-  "von": "",
+  "von": "Andrea",
   "portionen": null,
   "zeit": null,
   "tags": [
@@ -309,7 +309,7 @@
   "id": "moehreneintopf",
   "titel": "Möhreneintopf",
   "kategorie": "suppen",
-  "von": "",
+  "von": "Oma Hanna",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -453,7 +453,7 @@
   "id": "crepes",
   "titel": "Crêpes",
   "kategorie": "fruehstueck",
-  "von": "",
+  "von": "Carine",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -476,7 +476,7 @@
   "id": "maisbratlinge",
   "titel": "Maisbratlinge",
   "kategorie": "haupt-veggie",
-  "von": "",
+  "von": "Kirsten",
   "portionen": null,
   "zeit": null,
   "tags": [
@@ -608,7 +608,7 @@
   "id": "zigeunersauce",
   "titel": "Zigeunersauce",
   "kategorie": "saucen",
-  "von": "Maiks Mama",
+  "von": "Oma Christa",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -701,7 +701,7 @@
   "id": "apfelkuchen",
   "titel": "Apfelkuchen",
   "kategorie": "kuchen",
-  "von": "",
+  "von": "Oma Hanna",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -728,7 +728,7 @@
   "id": "schwedische-apfeltorte",
   "titel": "Schwedische Apfeltorte",
   "kategorie": "kuchen",
-  "von": "",
+  "von": "Oma Christa",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -903,7 +903,7 @@
   "id": "kirschkuchen-mit-mandelboden",
   "titel": "Kirschkuchen mit Mandelboden",
   "kategorie": "kuchen",
-  "von": "",
+  "von": "Oma Christa",
   "portionen": null,
   "zeit": null,
   "tags": [],
@@ -1006,7 +1006,7 @@
    "Die Creme auf dem Boden verteilen.",
    "Mit Sahne bedecken und mit Streuseln oder Raspelschokolade verzieren."
   ],
-  "notizen": ""
+  "notizen": "US-Rezept."
  },
  {
   "id": "brownies",
@@ -1147,30 +1147,6 @@
    "Die Blättchen schnell aus dem Eisen lösen und noch heiß zu Röllchen oder Tüten wickeln."
   ],
   "notizen": "Damit die Neujahrswaffeln knusprig bleiben, in gut schließenden Blechdosen aufbewahren."
- },
- {
-  "id": "sables",
-  "titel": "Sablés",
-  "kategorie": "weihnachten",
-  "von": "",
-  "portionen": null,
-  "zeit": null,
-  "tags": [],
-  "zutaten": [
-   "250 g Mehl",
-   "1 Ei",
-   "125 g Butter",
-   "130 g Zucker",
-   "1 Prise Salz",
-   "½ Tafel Zartbitterschokolade",
-   "etwas geriebene Mandeln oder 1 Prise Muskat oder Zimt"
-  ],
-  "schritte": [
-   "Ei, Zucker und Salz mischen. Mehl und Muskat (bzw. Mandeln oder Zimt) hinzugeben und den Teig durchkneten.",
-   "Die Butter in kleine Stücke schneiden, dazugeben und kneten, bis der Teig nicht mehr klebt. Die Schokolade in Stückchen schneiden und dazugeben.",
-   "Den Teig ausrollen, Plätzchen ausstechen und bei 150 °C ca. 20 Minuten backen."
-  ],
-  "notizen": "Französische Schokoladenplätzchen. Die Plätzchen sollen ganz hell bleiben, also nicht zu lange backen."
  },
  {
   "id": "teegebaeck",
