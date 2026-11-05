@@ -2,7 +2,7 @@
 
 Rezeptesammlung als GitHub-Pages-Seite.
 
-**➜ Zum Kochbuch: [lueb-sammlung.github.io/Kochbuch](https://lueb-sammlung.github.io/Kochbuch/)**
+**➜ Zum Kochbuch: [familien-kochbuch.github.io/Kochbuch](https://familien-kochbuch.github.io/Kochbuch/)**
 
 ## Rezept hinzufügen
 
