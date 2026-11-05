@@ -2,6 +2,8 @@
 
 Rezeptesammlung als GitHub-Pages-Seite.
 
+**➜ Zum Kochbuch: [lueb-sammlung.github.io/Kochbuch](https://lueb-sammlung.github.io/Kochbuch/)**
+
 ## Rezept hinzufügen
 
 Alle Rezepte stehen in `rezepte.json`. Ein Rezept sieht so aus:
