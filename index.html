@@ -96,6 +96,24 @@ nav.cats{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px)}
 .cathead h2{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.1;margin:0;display:flex;align-items:center;gap:12px;text-wrap:balance}
 .cathead .dot{width:14px;height:14px;border-radius:50%;flex:none}
 
+/* Fotos */
+.rcard{padding:0;gap:0}
+.rcard::before{display:none}
+.rimg{display:block;aspect-ratio:16/10;max-width:100%;background:var(--line);overflow:hidden;position:relative;flex:none}
+.rimg img{width:100%;height:100%;object-fit:cover;display:block}
+.rimg.ph{background:linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.08)),var(--catc)}
+.rimg.ph::after{content:attr(data-letter);position:absolute;right:12px;bottom:-.28em;font-family:var(--f-display);font-size:6rem;line-height:1;color:#fff;opacity:.22}
+.rbody{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;flex:1;min-width:0}
+.hero.has-photo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:center}
+.hero.has-photo::after{display:none}
+.hero-txt{min-width:0}
+.hero-photo{margin:0;position:relative;min-width:0}
+.hero-photo img{display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:rgba(255,255,255,.15)}
+.hero-photo figcaption{font-size:.72rem;line-height:1.35;opacity:.88;margin-top:6px}
+.hero-photo a{color:inherit}
+.pg .band.photo{min-height:100mm;background-size:cover;background-position:center}
+.pg .band.photo::after{display:none}
+
 /* Detail: liniertes Karteiblatt */
 .sheet{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
 .sheet-head{padding:28px 28px 20px;border-bottom:2px solid var(--accent)}
@@ -177,6 +195,8 @@ legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
   .tile{min-height:122px;padding:14px}
   .t-name{font-size:1.12rem}
   .tile::after{font-size:5.5rem}
+  .hero.has-photo{grid-template-columns:minmax(0,1fr);gap:18px}
+  .hero-photo{order:-1}
 }
 #print-all{display:none}
 /* Druck: DIN A5, große Schrift */
@@ -339,10 +359,13 @@ function renderList(){
   grid.innerHTML=list.map(r=>{
     const c=catOf(r.kategorie);
     return `<button class="rcard" type="button" data-id="${esc(r.id)}" style="--catc:${c?c.c:"var(--accent)"}">
+      ${photoBox(r)}
+      <span class="rbody">
       <span class="kat">${esc(catName(r.kategorie))}</span>
       <h3>${esc(r.titel||"Ohne Titel")}</h3>
       <span class="meta">${r.von?`<span>von ${esc(r.von)}</span>`:""}${r.zeit?`<span>${esc(r.zeit)} Min.</span>`:""}${r.portionen?`<span>${esc(r.portionen)} Portionen</span>`:""}</span>
       ${(r.tags||[]).length?`<span class="minitags">${r.tags.map(t=>`<span class="minitag">${esc(t)}</span>`).join("")}</span>`:""}
+      </span>
     </button>`}).join("");
   if(!state.loaded){empty.hidden=true;return}
   if(n===0){
@@ -398,6 +421,21 @@ const ICON={
 };
 function updateCount(){const n=state.recipes.length;$("count").textContent=state.loaded?(n===1?"1 Rezept":n+" Rezepte"):"Lädt …"}
 function catColor(r){const c=catOf(r.kategorie);return c?c.c:"#5b3a5e"}
+function hasPhoto(r){return !!(r&&r.foto&&r.foto.src)}
+function photoBox(r){
+  return hasPhoto(r)?`<span class="rimg"><img src="${esc(r.foto.src)}" alt="" loading="lazy" decoding="async"></span>`
+    :`<span class="rimg ph" data-letter="${letterOf(r)}" aria-hidden="true"></span>`;
+}
+function srcName(f){return /wikimedia\.org/.test(f.seite||"")?"Wikimedia Commons":"Quelle"}
+function creditText(f){
+  if(!f||!(f.urheber||f.lizenz))return "";
+  return ["Foto: "+(f.urheber||"unbekannt"),f.lizenz,f.seite?srcName(f):""].filter(Boolean).join(" · ");
+}
+function creditHTML(f){
+  if(!f||!(f.urheber||f.lizenz))return "";
+  const a=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
+  return ["Foto: "+esc(f.urheber||"unbekannt"),f.lizenz?a(f.lizenzUrl,f.lizenz):"",f.seite?a(f.seite,srcName(f)):""].filter(Boolean).join(" · ");
+}
 function nIngr(r){return (r.zutaten||[]).filter(l=>!/:\s*$/.test(l)).length}
 function letterOf(r){return esc((r.titel||"?").replace(/^[^A-Za-zÄÖÜäöü]+/,"").charAt(0).toUpperCase())}
 function renderDetail(id){
@@ -450,11 +488,14 @@ function sheetHTML(r,factor,portions,scalable,interactive){
   facts.push([ICON.list,"Zutaten",nIngr(r)]);
   const chk=(set,i,attr)=>interactive?` ${attr}="${i}" role="checkbox" tabindex="0" aria-checked="${set.has(i)}"${set.has(i)?' class="done"':""}`:"";
   return `<article class="sheet" style="--catc:${catColor(r)}">
-     <header class="hero" data-letter="${letterOf(r)}">
+     <header class="hero${hasPhoto(r)?" has-photo":""}" data-letter="${letterOf(r)}">
+       <div class="hero-txt">
        <span class="hero-kat">${esc(catName(r.kategorie))}</span>
        <h2>${esc(r.titel)}</h2>
        <div class="facts">${facts.map(([i,l,x])=>`<div class="fact">${i}<span><small>${l}</small>${esc(x)}</span></div>`).join("")}</div>
        ${(r.tags||[]).length?`<div class="hero-tags">${r.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
+       </div>
+       ${hasPhoto(r)?`<figure class="hero-photo"><img src="${esc(r.foto.src)}" alt="${esc(r.titel)}" decoding="async">${creditHTML(r.foto)?`<figcaption>${creditHTML(r.foto)}</figcaption>`:""}</figure>`:""}
      </header>
      <div class="sheet-body">
        <div class="col">
@@ -483,11 +524,11 @@ function pCover(r){
   f.push(["Zutaten",nIngr(r)]);
   if((r.schritte||[]).length)f.push(["Schritte",r.schritte.length]);
   return `<div class="pg pg-cover"><div class="pg-in">
-    <div class="band" data-letter="${letterOf(r)}"><span class="kat">${esc(catName(r.kategorie))}</span><h2>${esc(r.titel)}</h2>${r.von?`<div class="von">Rezept von ${esc(r.von)}</div>`:""}</div>
+    <div class="band${hasPhoto(r)?" photo":""}" data-letter="${letterOf(r)}"${hasPhoto(r)?` style="background-image:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.05) 65%),url(&quot;${esc(r.foto.src)}&quot;)"`:""}><span class="kat">${esc(catName(r.kategorie))}</span><h2>${esc(r.titel)}</h2>${r.von?`<div class="von">Rezept von ${esc(r.von)}</div>`:""}</div>
     <div class="cfacts">${f.map(([l,x])=>`<div class="cfact"><small>${l}</small><b>${esc(x)}</b></div>`).join("")}</div>
     ${(r.tags||[]).length?`<div class="ctags">${r.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
     ${r.notizen?`<div class="cnotes"><small>Gut zu wissen</small>${esc(r.notizen).replace(/\n/g,"<br>")}</div>`:""}
-    <div class="pfoot"><span>Kochbuch</span><span>Zutaten und Zubereitung umseitig</span></div>
+    <div class="pfoot"><span>${hasPhoto(r)&&creditText(r.foto)?esc(creditText(r.foto)):"Kochbuch"}</span><span>Zutaten und Zubereitung umseitig</span></div>
   </div></div>`;
 }
 function pHead(r,portions,suffix){
@@ -522,6 +563,7 @@ async function printRecipes(list,factor,portions){
     const p=portions||(+r.portionen||0);
     return `<div class="rec" data-i="${i}" style="--catc:${catColor(r)}">${pCover(r).replace('class="pg pg-cover"',`class="pg pg-cover" style="--catc:${catColor(r)}"`)}${pPage("pg-back",pHead(r,p)+pIngr(r,factor)+pSteps(r),r)}</div>`;
   }).join("");
+  await Promise.race([Promise.all(list.filter(hasPhoto).map(r=>new Promise(res=>{const im=new Image();im.onload=im.onerror=res;im.src=r.foto.src}))),new Promise(res=>setTimeout(res,10000))]);
   box.classList.add("measuring");
   try{await document.fonts.ready}catch(e){}
   box.querySelectorAll(".rec").forEach((rec,idx)=>{
