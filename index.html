@@ -87,7 +87,7 @@ nav.cats{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px)}
 .tile::after{content:attr(data-letter);position:absolute;right:12px;bottom:-.3em;font-family:var(--f-display);font-size:7.5rem;line-height:1;opacity:.14;pointer-events:none}
 .tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18)}
 .t-n{position:relative;font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;opacity:.92}
-.t-name{position:relative;margin-top:auto;font-family:var(--f-display);font-size:1.45rem;line-height:1.15;text-wrap:balance;max-width:14ch}
+.t-name{position:relative;margin-top:auto;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;font-family:var(--f-display);font-size:1.45rem;line-height:1.15;text-wrap:balance;max-width:14ch}
 .t-sub{position:relative;font-size:.85rem;opacity:.92}
 .home-foot{display:flex;justify-content:center;padding-top:24px}
 .cathead{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:18px}
