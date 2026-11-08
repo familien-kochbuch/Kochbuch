@@ -179,47 +179,48 @@ legend{font-weight:600;font-size:.92rem;margin-bottom:8px}
   .tile::after{font-size:5.5rem}
 }
 #print-all{display:none}
+/* Druck: DIN A5, große Schrift */
+#print-all.measuring{display:block;position:absolute;left:-10000px;top:0}
+.pg{box-sizing:border-box;width:148mm;height:210mm;padding:11mm 12mm 9mm;display:flex;flex-direction:column;background:#fff;color:#111;font-family:var(--f-body);--fs:14pt}
+.pg-in{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.pg .band{position:relative;overflow:hidden;background:var(--catc);color:#fff;border-radius:3mm;min-height:76mm;padding:9mm 8mm 8mm;display:flex;flex-direction:column;justify-content:flex-end;flex:none}
+.pg .band::after{content:attr(data-letter);position:absolute;right:5mm;top:-8mm;font-family:var(--f-display);font-size:150pt;line-height:1;opacity:.15}
+.pg .band .kat{position:relative;font-family:var(--f-mono);font-size:9pt;letter-spacing:.12em;text-transform:uppercase}
+.pg .band h2{position:relative;font-family:var(--f-display);font-weight:400;font-size:28pt;line-height:1.08;margin:3mm 0 0;text-wrap:balance;hyphens:auto;-webkit-hyphens:auto}
+.pg .band .von{position:relative;margin-top:3mm;font-size:14pt}
+.cfacts{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3mm;margin-top:6mm}
+.cfact{border:.3mm solid #aaa;border-radius:2.5mm;padding:2.5mm 3mm;display:grid;gap:.5mm}
+.cfact small{font-family:var(--f-mono);font-size:7.5pt;letter-spacing:.06em;text-transform:uppercase;color:#333}
+.cfact b{font-family:var(--f-display);font-weight:400;font-size:18pt;color:var(--catc)}
+.ctags{display:flex;flex-wrap:wrap;gap:2mm;margin-top:5mm}
+.ctags span{border:.3mm solid var(--catc);color:var(--catc);border-radius:99px;padding:.8mm 3mm;font-size:11.5pt}
+.cnotes{margin-top:6mm;border-left:.9mm solid var(--catc);padding:1mm 0 1mm 4mm;font-size:var(--fs);line-height:1.45}
+.pg small.lbl,.cnotes small{display:block;font-family:var(--f-mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;color:#333;margin-bottom:1.5mm}
+.pfoot{margin-top:auto;border-top:.3mm solid #aaa;padding-top:2.5mm;display:flex;justify-content:space-between;gap:4mm;font-family:var(--f-mono);font-size:7.5pt;color:#333;flex:none}
+.bhead{border-bottom:.9mm solid var(--catc);padding-bottom:2.5mm;margin-bottom:4mm;flex:none}
+.bhead .kat{font-family:var(--f-mono);font-size:8pt;letter-spacing:.1em;text-transform:uppercase;color:#333}
+.bhead h2{font-family:var(--f-display);font-weight:400;font-size:21pt;line-height:1.1;margin:1mm 0 0;hyphens:auto;-webkit-hyphens:auto}
+.bhead .meta{font-size:11.5pt;color:#222;margin-top:1.5mm}
+.plabel{font-family:var(--f-mono);font-size:9pt;letter-spacing:.1em;text-transform:uppercase;color:var(--catc);margin:0 0 2mm;font-weight:500}
+.pingr{list-style:none;margin:0 0 5mm;padding:0;font-size:var(--fs);line-height:1.3}
+.pingr.two{column-count:2;column-gap:7mm}
+.pingr li{padding:1.2mm 0;border-bottom:.25mm solid #ccc;break-inside:avoid}
+.pingr li b{font-weight:700}
+.pingr li.sub{font-family:var(--f-mono);font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:var(--catc);border:0;padding-top:2.5mm;break-after:avoid}
+.psteps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:2.8mm;font-size:var(--fs);line-height:1.38}
+.psteps li{counter-increment:s;display:grid;grid-template-columns:7.5mm minmax(0,1fr);gap:2.5mm}
+.psteps li::before{content:counter(s);width:7mm;height:7mm;border-radius:50%;background:var(--catc);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-size:12pt;line-height:1;margin-top:.3mm}
+.plines{flex:1;margin-top:3mm;background:repeating-linear-gradient(to bottom,transparent 0 9mm,#bbb 9mm 9.3mm)}
+.pempty{font-size:var(--fs);color:#333}
 @media print{
-  @page{margin:15mm}
-  :root,:root[data-theme="dark"]{--paper:#fff;--card:#fff;--ink:#111;--muted:#555;--line:#bbb;--rule:#ddd;--accent:#5b3a5e;--mustard-soft:#f1f1f1;color-scheme:light}
-  body{background:#fff;color:#111;font-size:11pt;padding:0!important}
-  .wrap{max-width:none}
-  header.top,#view-list,#view-form,.detail-actions,.toast,.scaler button{display:none!important}
-  body.printing-all #view-detail{display:none!important}
-  body.printing-all #print-all{display:block}
-  .sheet{border:0;border-radius:0}
-  #print-all .sheet{break-after:page}
-  #print-all .sheet:last-child{break-after:auto}
-  .hero{background:none!important;color:#111;padding:0 0 8px;border-bottom:2.5px solid var(--catc)}
-  .hero::after,.facts,.hero-tags,.hint,.tick{display:none!important}
-  .hero h2{font-size:22pt;margin:4px 0 0;max-width:none}
-  .sheet .notes{display:none}
-  .steps li::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  /* Vorderseite */
-  .cover{display:flex;flex-direction:column;height:262mm;break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .cover-band{position:relative;overflow:hidden;background:var(--catc);color:#fff;min-height:120mm;padding:14mm 12mm 12mm;display:flex;flex-direction:column;justify-content:flex-end;border-radius:4mm}
-  .cover-band::after{content:attr(data-letter);position:absolute;right:8mm;top:-10mm;font-family:var(--f-display);font-size:230pt;line-height:1;opacity:.15}
-  .cover-kat{position:relative;font-family:var(--f-mono);font-size:9pt;letter-spacing:.12em;text-transform:uppercase}
-  .cover-band h2{position:relative;font-family:var(--f-display);font-weight:400;font-size:38pt;line-height:1.05;margin:4mm 0 0;text-wrap:balance}
-  .cover-von{position:relative;margin-top:4mm;font-size:13pt}
-  .cover-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin:9mm 0 0}
-  .cover-fact{border:1px solid #ccc;border-radius:3mm;padding:4mm;display:grid;gap:1mm}
-  .cover-fact small{font-family:var(--f-mono);font-size:7.5pt;letter-spacing:.08em;text-transform:uppercase;color:#555}
-  .cover-fact b{font-family:var(--f-display);font-weight:400;font-size:18pt;color:var(--catc)}
-  .cover-tags{display:flex;flex-wrap:wrap;gap:2mm;margin-top:7mm}
-  .cover-tags span{border:1px solid var(--catc);color:var(--catc);border-radius:99px;padding:1mm 3.5mm;font-size:10pt}
-  .cover-notes{margin-top:9mm;border-left:3px solid var(--catc);padding:1mm 0 1mm 5mm;font-size:12pt;line-height:1.5}
-  .cover-notes small{display:block;font-family:var(--f-mono);font-size:7.5pt;letter-spacing:.08em;text-transform:uppercase;color:#555;margin-bottom:1.5mm}
-  .cover-foot{margin-top:auto;border-top:1px solid #ccc;padding-top:3mm;display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:8pt;color:#555;letter-spacing:.05em}
-  .sheet-body{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)!important}
-  .col{padding:14px 16px 0 0!important}
-  .col + .col{border-left:1px solid #ccc!important;border-top:0!important;padding-left:16px!important}
-  .ingr{background:none;line-height:1.5}
-  .ingr li{padding:2px 0;border-bottom:1px solid #e3e3e3;break-inside:avoid}
-  .steps li{break-inside:avoid}
-  .minitag{border:1px solid #ccc;background:none}
-  .notes{background:none;border:1px solid #ccc}
-  .scaler{margin-bottom:6px}
+  @page{size:A5;margin:0}
+  html,body{background:#fff!important}
+  body{padding:0!important;margin:0!important}
+  .wrap{max-width:none!important;margin:0!important}
+  .wrap > :not(#print-all),.toast{display:none!important}
+  body.printing-all #print-all{display:block!important;position:static}
+  .pg{break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rec:last-child .pg:last-child{break-after:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -420,7 +421,6 @@ function renderDetail(id){
        ${state.canWrite?`<button class="btn small" data-act="edit" data-id="${esc(r.id)}" type="button">Bearbeiten</button>`:""}
      </span>
    </div>
-   ${coverHTML(r)}
    ${sheetHTML(r,detailFactor,detailPortions,!!base,true)}`;
 }
 function coverHTML(r){
@@ -473,7 +473,71 @@ function sheetHTML(r,factor,portions,scalable,interactive){
 }
 function printAll(){
   const list=state.recipes.filter(matches).sort((a,b)=>(a.titel||"").localeCompare(b.titel||"","de"));
-  $("print-all").innerHTML=list.map(r=>coverHTML(r)+sheetHTML(r,1,+r.portionen||0,!!+r.portionen,false)).join("");
+  printRecipes(list,1,0);
+}
+/* ---------- Druck auf DIN A5 ---------- */
+function pCover(r){
+  const f=[];
+  if(+r.portionen)f.push(["Portionen",r.portionen]);
+  if(r.zeit)f.push(["Zeit",r.zeit+" Min."]);
+  f.push(["Zutaten",nIngr(r)]);
+  if((r.schritte||[]).length)f.push(["Schritte",r.schritte.length]);
+  return `<div class="pg pg-cover"><div class="pg-in">
+    <div class="band" data-letter="${letterOf(r)}"><span class="kat">${esc(catName(r.kategorie))}</span><h2>${esc(r.titel)}</h2>${r.von?`<div class="von">Rezept von ${esc(r.von)}</div>`:""}</div>
+    <div class="cfacts">${f.map(([l,x])=>`<div class="cfact"><small>${l}</small><b>${esc(x)}</b></div>`).join("")}</div>
+    ${(r.tags||[]).length?`<div class="ctags">${r.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
+    ${r.notizen?`<div class="cnotes"><small>Gut zu wissen</small>${esc(r.notizen).replace(/\n/g,"<br>")}</div>`:""}
+    <div class="pfoot"><span>Kochbuch</span><span>Zutaten und Zubereitung umseitig</span></div>
+  </div></div>`;
+}
+function pHead(r,portions,suffix){
+  const m=[];
+  if(portions)m.push(portions+" Portion"+(portions==1?"":"en"));
+  if(r.zeit)m.push(r.zeit+" Min.");
+  if(r.von)m.push("Rezept von "+r.von);
+  return `<div class="bhead"><div class="kat">${esc(catName(r.kategorie))}</div><h2>${esc(r.titel)}${suffix?` <span style="font-size:.6em">${suffix}</span>`:""}</h2>${m.length&&!suffix?`<div class="meta">${esc(m.join(" · "))}</div>`:""}</div>`;
+}
+function pIngr(r,factor){
+  const z=r.zutaten||[];
+  if(!z.length)return `<p class="pempty">Keine Zutaten eingetragen.</p>`;
+  return `<p class="plabel">Zutaten</p><ul class="pingr${nIngr(r)>=8?" two":""}">${z.map(l=>{
+    if(/:\s*$/.test(l))return `<li class="sub">${esc(l.replace(/:\s*$/,""))}</li>`;
+    const s=splitIngr(l,factor);return `<li>${s.amt?`<b>${esc(s.amt)}</b> `:""}${esc(s.name)}</li>`}).join("")}</ul>`;
+}
+function pSteps(r){
+  const st=r.schritte||[];
+  return `<p class="plabel">Zubereitung</p>${st.length?`<ol class="psteps">${st.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol>`:`<p class="pempty">Keine Schritte eingetragen.</p>`}`;
+}
+const pPage=(cls,inner,r)=>`<div class="pg ${cls}" style="--catc:${catColor(r)}"><div class="pg-in">${inner}</div></div>`;
+function fitPage(pg,max,min){
+  const inn=pg.querySelector(".pg-in");let fs=max;
+  pg.style.setProperty("--fs",fs+"pt");
+  while(inn.scrollHeight>inn.clientHeight+1&&fs>min){fs=Math.round((fs-.5)*10)/10;pg.style.setProperty("--fs",fs+"pt")}
+  return inn.scrollHeight<=inn.clientHeight+1;
+}
+async function printRecipes(list,factor,portions){
+  if(!list.length)return;
+  const box=$("print-all");
+  box.innerHTML=list.map((r,i)=>{
+    const p=portions||(+r.portionen||0);
+    return `<div class="rec" data-i="${i}" style="--catc:${catColor(r)}">${pCover(r).replace('class="pg pg-cover"',`class="pg pg-cover" style="--catc:${catColor(r)}"`)}${pPage("pg-back",pHead(r,p)+pIngr(r,factor)+pSteps(r),r)}</div>`;
+  }).join("");
+  box.classList.add("measuring");
+  try{await document.fonts.ready}catch(e){}
+  box.querySelectorAll(".rec").forEach((rec,idx)=>{
+    const r=list[+rec.dataset.i],p=portions||(+r.portionen||0);
+    fitPage(rec.querySelector(".pg-cover"),14,11);
+    const back=rec.querySelector(".pg-back");
+    if(fitPage(back,14,12))return;
+    // Passt nicht auf eine Seite: Zutaten und Zubereitung auf zwei Seiten
+    const tmp=document.createElement("div");
+    tmp.innerHTML=pPage("pg-back",pHead(r,p)+pIngr(r,factor),r)+pPage("pg-back",pHead(r,p,"· Zubereitung")+pSteps(r),r)
+      +(list.length>1&&idx<list.length-1?pPage("pg-notes",`<small class="lbl">Platz für Notizen · ${esc(r.titel)}</small><div class="plines"></div>`,r):"");
+    const pages=[...tmp.children];
+    back.replaceWith(...pages);
+    pages.slice(0,2).forEach(pg=>fitPage(pg,14,10.5));
+  });
+  box.classList.remove("measuring");
   document.body.classList.add("printing-all");
   window.print();
 }
@@ -588,7 +652,7 @@ document.addEventListener("click",async e=>{
   if(a==="cancel"){location.hash.startsWith("#r-")?(renderDetail(location.hash.slice(3)),show("detail")):(renderList(),show("list"));return}
   if(a==="plus"||a==="minus"){detailPortions=Math.max(1,detailPortions+(a==="plus"?1:-1));renderDetail(location.hash.slice(3));return}
   if(b.id==="btn-printall"){printAll();return}
-  if(a==="print"){window.print();return}
+  if(a==="print"){const r=state.recipes.find(x=>x.id===detailId);if(r)printRecipes([r],detailFactor,detailPortions);return}
   if(a==="copylink"){
     const url=location.href;
     try{await navigator.clipboard.writeText(url);toast("Link kopiert")}catch{toast("Link oben in der Adresszeile kopieren")}
