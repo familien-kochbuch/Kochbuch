@@ -305,7 +305,7 @@ const CATS=[
  {k:"getraenke",n:"Getränke",c:"#3d7f7a"},
  {k:"saucen",n:"Saucen, Dips & Eingemachtes",c:"#6b5b95"}
 ];
-const TAGS=["Schnell (unter 30 Min.)","Vegetarisch","Vegan","Kinderliebling","Für Gäste","Familienklassiker","Gut vorzubereiten"];
+const TAGS=["Vegetarisch","Fleisch","Fisch","Schnell (unter 30 Min.)","Gut vorzubereiten"];
 const catOf=k=>CATS.find(c=>c.k===k);
 const catName=k=>{const c=catOf(k);if(!c)return "Ohne Kategorie";return c.parent?catOf(c.parent).n+" · "+c.n:c.n};
 
