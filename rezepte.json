@@ -6,7 +6,9 @@
   "von": "",
   "portionen": 4,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fisch"
+  ],
   "zutaten": [
    "400 g Bandnudeln",
    "200 g Lachsfilet",
@@ -38,7 +40,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "2 große Zwiebeln",
    "1 EL Öl",
@@ -66,7 +70,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "Fertiglasagne (Tüte)",
    "Lasagneplatten (zum Nicht-Vorkochen)",
@@ -94,7 +100,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "6 Putenschnitzel",
    "2 Becher süße Sahne (Schlagsahne)",
@@ -125,7 +133,9 @@
   "von": "",
   "portionen": 2,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "300 g Spaghetti",
    "100 g gewürfelter Schinkenspeck",
@@ -252,7 +262,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "1 Beutel Reis",
    "200 g gekochter Schinken",
@@ -357,7 +369,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "100 g Zwiebeln",
    "200 g rote Paprika",
@@ -389,7 +403,9 @@
   "von": "Oma Hanna",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "750 g Kartoffeln",
    "750 g Möhren",
@@ -455,7 +471,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "Suppenfleisch",
    "½ Paket Suppennudeln",
@@ -826,7 +844,9 @@
   "von": "",
   "portionen": null,
   "zeit": null,
-  "tags": [],
+  "tags": [
+   "Fleisch"
+  ],
   "zutaten": [
    "100 g durchwachsener Speck (gewürfelt)",
    "1 Zwiebel",
